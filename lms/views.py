@@ -3,7 +3,8 @@ from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      UpdateAPIView)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
-
+from django.utils.decorators import method_decorator
+from drf_yasg.utils import swagger_auto_schema
 from lms.models import Course, Lesson, Subscription
 from lms.serializers import CourseSerializer, LessonSerializer, SubscriptionSerializer
 from users.permissions import IsModer, IsOwner
@@ -11,6 +12,27 @@ from lms.paginations import CustomPagination
 
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
+
+
+@method_decorator(
+    name="list",
+    decorator=swagger_auto_schema(operation_description="Список курсов"),
+)
+@method_decorator(
+    name="create", decorator=swagger_auto_schema(operation_description="Создание курса")
+)
+@method_decorator(
+    name="retrieve",
+    decorator=swagger_auto_schema(operation_description="Просмотр курса"),
+)
+@method_decorator(
+    name="destroy",
+    decorator=swagger_auto_schema(operation_description="Удаление курса"),
+)
+@method_decorator(
+    name="update",
+    decorator=swagger_auto_schema(operation_description="Обновление курса"),
+)
 
 
 class CourseViewSet(ModelViewSet):
@@ -27,11 +49,19 @@ class CourseViewSet(ModelViewSet):
             self.permission_classes = (~IsModer | IsOwner,)
         return super().get_permissions()
 
+    def perform_create(self, serializer):
+        course = serializer.save(owner=self.request.user)
+        course.save()
+
 
 class LessonCreateApiView(CreateAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated, ~IsModer]
+
+    def perform_create(self, serializer):
+        course = serializer.save(owner=self.request.user)
+        course.save()
 
 
 class LessonListApiView(ListAPIView):
