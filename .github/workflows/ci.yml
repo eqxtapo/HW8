@@ -32,6 +32,12 @@ jobs:
       run: python manage.py migrate
       env:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        NAME: ${{ secrets.NAME }}
+        USER: ${{ secrets.USER }}
+        PASSWORD: ${{ secrets.PASSWORD }}
+        HOST: ${{ secrets.HOST }}
+        PORT: ${{ secrets.PORT }}
+
 
     - name: Run tests
       run: python manage.py test
