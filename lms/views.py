@@ -80,7 +80,7 @@ class LessonCreateApiView(CreateAPIView):
         lesson = serializer.save()
         lesson.user = self.request.user
         # отправить сообщение о создании урока подписанному пользователю:
-        for subscription in Subscription.objects.filter(course=lesson.courses.pk):
+        for subscription in Subscription.objects.filter(course=lesson.course.pk):
             email = subscription.user.email
             message = f'В курсе "{subscription.course.title}" появился новый урок'
             send_notification.delay(email, message)
@@ -109,7 +109,7 @@ class LessonUpdateApiView(UpdateAPIView):
         lesson = serializer.save()
         lesson.user = self.request.user
         # отправить сообщение об обновлении урока подписанному пользователю:
-        for subscription in Subscription.objects.filter(course=lesson.courses.pk):
+        for subscription in Subscription.objects.filter(course=lesson.course.pk):
             email = subscription.user.email
             message = (
                 f'В курсе "{subscription.course.title}" обновился урок "{lesson.title}"'

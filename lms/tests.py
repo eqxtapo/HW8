@@ -52,7 +52,7 @@ class LessonTestCase(APITestCase):
         self.assertEqual(Lesson.objects.count(), 0)
 
     def test_lesson_list(self):
-        url = reverse("lms:Lessons_list")
+        url = reverse("lms:Lesson_list")
         response = self.client.get(url)
         data = response.json()
         result = {
