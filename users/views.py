@@ -6,7 +6,11 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from users.models import Payment, User
-from users.serializers import PaymentSerializer, UserSerializer, CustomTokenPairSerializer
+from users.serializers import (
+    PaymentSerializer,
+    UserSerializer,
+    CustomTokenPairSerializer,
+)
 from users.services import (
     create_stripe_price,
     create_stripe_product,
@@ -24,6 +28,7 @@ class PaymentViewSet(ModelViewSet):
         "type",
     )
     ordering_fields = ("payment_date",)
+
 
 class UserCreateAPIView(CreateAPIView):
     serializer_class = UserSerializer
