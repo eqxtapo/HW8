@@ -29,7 +29,7 @@ class Course(models.Model):
         help_text="Выберите владельца курса",
         related_name="courses",
         null=True,
-        blank=True
+        blank=True,
     )
 
     class Meta:
@@ -80,7 +80,7 @@ class Lesson(models.Model):
         help_text="Выберите владельца урока",
         related_name="lessons",
         null=True,
-        blank=True
+        blank=True,
     )
 
     class Meta:
@@ -92,9 +92,17 @@ class Lesson(models.Model):
 
 
 class Subscription(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="Курс", related_name="subscriptions")
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        verbose_name="Курс",
+        related_name="subscriptions",
+    )
     user = models.ForeignKey(
-        AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Пользователь",  related_name="subscriptions"
+        AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        verbose_name="Пользователь",
+        related_name="subscriptions",
     )
 
     class Meta:

@@ -1,6 +1,10 @@
-from rest_framework.generics import (CreateAPIView, DestroyAPIView,
-                                     ListAPIView, RetrieveAPIView,
-                                     UpdateAPIView)
+from rest_framework.generics import (
+    CreateAPIView,
+    DestroyAPIView,
+    ListAPIView,
+    RetrieveAPIView,
+    UpdateAPIView,
+)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from django.utils.decorators import method_decorator
@@ -13,7 +17,6 @@ from lms.paginations import CustomPagination
 
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-
 
 
 @method_decorator(
@@ -35,8 +38,6 @@ from rest_framework.response import Response
     name="update",
     decorator=swagger_auto_schema(operation_description="Обновление курса"),
 )
-
-
 class CourseViewSet(ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
