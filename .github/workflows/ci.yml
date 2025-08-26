@@ -65,7 +65,11 @@ jobs:
         ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
     - name: Copy project files to server
       run: |
-          rsync -avz --exclude '__pycache__' . ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:${{ secrets.DEPLOY_DIR }}
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+         cd ${{ secrets.DEPLOY_DIR }}
+         git fetch --prune
+         git reset --hard origin/ci_cd
+       EOF
 
     - name: Install dependencies on server
       run: |
