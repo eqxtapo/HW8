@@ -74,6 +74,7 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "
         ls
+        pwd
         cat > .env < 'EOF'
         NAME=${{ secrets.NAME }}
         USER=${{ secrets.USER }}
