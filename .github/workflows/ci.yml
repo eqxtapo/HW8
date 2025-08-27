@@ -83,9 +83,7 @@ jobs:
         SECRET_KEY=${{ secrets.SECRET_KEY }}
         DEBUG=0
         EOF
-        chmod 644 '${{ secrets.DEPLOY_DIR }}/.env'
-        chown $USER:$USER '${{ secrets.DEPLOY_DIR }}/.env'
-        ls -la '${{ secrets.DEPLOY_DIR }}/.env'
+        chmod 644 .env
         echo 'File created successfully'
         "
 
