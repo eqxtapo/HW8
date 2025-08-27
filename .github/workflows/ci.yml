@@ -73,9 +73,13 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
           cd ${{ secrets.DEPLOY_DIR }}
-          python3 -m venv venv
-          source venv/bin/activate
+          cat > .env <<EOL
+          NAME=${{ secrets.NAME }}
+          USER=${{ secrets.USER }}
+          HOST=${{ secrets.HOST }}
+          PORT=${{ secrets.PORT }}
           pip install -r requirements.txt
+          EOL
         EOF
 
     - name: Apply migrations on server
