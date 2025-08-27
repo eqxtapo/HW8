@@ -73,7 +73,8 @@ jobs:
     - name: Create .env file on server
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "
-        cat > ${{ secrets.DEPLOY_DIR }}/.env < 'EOF'
+        cd ${{ secrets.DEPLOY_DIR }}
+        cat > .env < 'EOF'
         NAME=${{ secrets.NAME }}
         USER=${{ secrets.USER }}
         PASSWORD=${{ secrets.PASSWORD }}
