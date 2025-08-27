@@ -67,7 +67,26 @@ jobs:
       run: |
          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
           cd ${{ secrets.DEPLOY_DIR }}
+          git pull
          EOF
+
+    - name: Create .env file on server
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "
+        cat > ${{ secrets.DEPLOY_DIR }}/.env < 'EOF'
+        NAME=${{ secrets.NAME }}
+        USER=${{ secrets.USER }}
+        PASSWORD=${{ secrets.PASSWORD }}
+        HOST=${{ secrets.HOST }}
+        PORT=${{ secrets.PORT }}
+        SECRET_KEY=${{ secrets.SECRET_KEY }}
+        DEBUG=0
+        EOF
+        chmod 644 '${{ secrets.DEPLOY_DIR }}/.env'
+        chown $USER:$USER '${{ secrets.DEPLOY_DIR }}/.env'
+        ls -la '${{ secrets.DEPLOY_DIR }}/.env'
+        echo 'File created successfully'
+        "
 
     - name: Install dependencies on server
       run: |
