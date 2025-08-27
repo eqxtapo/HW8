@@ -75,8 +75,8 @@ jobs:
         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "
         cd ${{ secrets.DEPLOY_DIR }}
         cat > .env << 'EOF'
-        DB_NAME=${{ secrets.NAME }}
-        USER=${{ secrets.USER }}
+        NAME=${{ secrets.NAME }}
+        DB_USER=${{ secrets.USER }}
         PASSWORD=${{ secrets.PASSWORD }}
         HOST=${{ secrets.HOST }}
         PORT=${{ secrets.PORT }}
