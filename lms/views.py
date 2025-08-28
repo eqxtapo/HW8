@@ -1,6 +1,10 @@
-from rest_framework.generics import (CreateAPIView, DestroyAPIView,
-                                     ListAPIView, RetrieveAPIView,
-                                     UpdateAPIView)
+from rest_framework.generics import (
+    CreateAPIView,
+    DestroyAPIView,
+    ListAPIView,
+    RetrieveAPIView,
+    UpdateAPIView,
+)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from django.utils.decorators import method_decorator
@@ -13,7 +17,6 @@ from lms.paginations import CustomPagination
 
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-
 
 
 @method_decorator(
@@ -35,8 +38,6 @@ from rest_framework.response import Response
     name="update",
     decorator=swagger_auto_schema(operation_description="Обновление курса"),
 )
-
-
 class CourseViewSet(ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
@@ -80,7 +81,7 @@ class LessonCreateApiView(CreateAPIView):
         lesson = serializer.save()
         lesson.user = self.request.user
         # отправить сообщение о создании урока подписанному пользователю:
-        for subscription in Subscription.objects.filter(course=lesson.courses.pk):
+        for subscription in Subscription.objects.filter(course=lesson.course.pk):
             email = subscription.user.email
             message = f'В курсе "{subscription.course.title}" появился новый урок'
             send_notification.delay(email, message)
@@ -109,7 +110,7 @@ class LessonUpdateApiView(UpdateAPIView):
         lesson = serializer.save()
         lesson.user = self.request.user
         # отправить сообщение об обновлении урока подписанному пользователю:
-        for subscription in Subscription.objects.filter(course=lesson.courses.pk):
+        for subscription in Subscription.objects.filter(course=lesson.course.pk):
             email = subscription.user.email
             message = (
                 f'В курсе "{subscription.course.title}" обновился урок "{lesson.title}"'
